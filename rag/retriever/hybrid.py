@@ -1,8 +1,9 @@
 """Hybrid retriever combining vector and keyword search."""
 
 import structlog
-from .vector_store import VectorStore
+
 from .keyword_search import KeywordSearcher
+from .vector_store import VectorStore
 
 logger = structlog.get_logger()
 

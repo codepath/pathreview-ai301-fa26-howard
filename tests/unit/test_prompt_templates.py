@@ -1,7 +1,8 @@
 """Tests for prompt_templates.py - Snapshot tests"""
 
-import pytest
 import hashlib
+
+import pytest
 
 from rag.generator.prompt_templates import PROMPT_TEMPLATES, get_template
 

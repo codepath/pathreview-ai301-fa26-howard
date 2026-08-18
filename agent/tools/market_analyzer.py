@@ -1,8 +1,10 @@
 """Job market comparison tool."""
 
-import redis
 import json
+
+import redis
 import structlog
+
 from .base import BaseTool, ToolResult
 
 logger = structlog.get_logger()

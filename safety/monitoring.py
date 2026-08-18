@@ -1,8 +1,9 @@
 """Safety event monitoring."""
 
+from datetime import datetime
+
 import redis
 import structlog
-from datetime import datetime, timedelta
 
 logger = structlog.get_logger()
 

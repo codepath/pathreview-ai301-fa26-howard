@@ -1,7 +1,8 @@
 """Tests for batch_processor.py"""
 
+from unittest.mock import Mock, patch
+
 import pytest
-from unittest.mock import Mock, MagicMock, patch
 
 from ingestion.chunking.base import Chunk
 from ingestion.embeddings.batch_processor import BatchEmbeddingProcessor

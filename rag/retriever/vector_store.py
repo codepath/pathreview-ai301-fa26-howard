@@ -1,7 +1,6 @@
 """ChromaDB-backed vector store for semantic retrieval."""
 
 import chromadb
-from chromadb.config import Settings
 import structlog
 
 logger = structlog.get_logger()

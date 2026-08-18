@@ -1,8 +1,9 @@
 """Parse LLM output into structured feedback."""
 
-from dataclasses import dataclass
 import json
 import re
+from dataclasses import dataclass
+
 import structlog
 
 logger = structlog.get_logger()
