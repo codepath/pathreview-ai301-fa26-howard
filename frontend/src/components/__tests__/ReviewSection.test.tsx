@@ -37,8 +37,12 @@ describe('ReviewSection', () => {
 
   it('starts collapsed and expands on click', () => {
     render(<ReviewSection section={mockSection} />)
-    const content = screen.getByText('Your code is well-structured and follows best practices.')
-    expect(content.parentElement).not.toHaveClass('block')
+    // ReviewSection renders its body conditionally ({isExpanded && ...}) rather than
+    // hiding it with a CSS class, so while collapsed the content is absent from the
+    // DOM entirely. Query for it instead of getting it, which would throw.
+    expect(
+      screen.queryByText('Your code is well-structured and follows best practices.')
+    ).not.toBeInTheDocument()
 
     const button = screen.getByRole('button')
     fireEvent.click(button)
