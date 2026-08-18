@@ -59,10 +59,9 @@ async def create_profile_endpoint(
             if file_mime == "application/pdf":
                 try:
                     import PyPDF2
+
                     pdf_reader = PyPDF2.PdfReader(content)
-                    resume_text = "\n".join(
-                        page.extract_text() for page in pdf_reader.pages
-                    )
+                    resume_text = "\n".join(page.extract_text() for page in pdf_reader.pages)
                 except Exception as exc:
                     log.error("pdf_parsing_failed", error=str(exc))
                     raise HTTPException(

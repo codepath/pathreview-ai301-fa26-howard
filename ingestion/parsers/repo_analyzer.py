@@ -38,11 +38,13 @@ class RepoAnalyzer(BaseParser):
         """
         if isinstance(content, bytes):
             import json
+
             repo_data = json.loads(content.decode("utf-8"))
         elif isinstance(content, dict):
             repo_data = content
         elif isinstance(content, str):
             import json
+
             repo_data = json.loads(content)
         else:
             raise ValueError("Content must be a dict, JSON string, or JSON bytes")

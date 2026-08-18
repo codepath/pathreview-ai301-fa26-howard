@@ -6,6 +6,7 @@ from typing import Optional
 @dataclass
 class SkillDetection:
     """Result of detecting a skill."""
+
     name: str
     category: str
     confidence: float

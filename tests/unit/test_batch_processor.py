@@ -15,11 +15,13 @@ class TestBatchEmbeddingProcessor:
     def mock_embedding_provider(self):
         """Create a mock embedding provider."""
         provider = Mock()
-        provider.embed = Mock(return_value=[
-            [0.1] * 1536,
-            [0.2] * 1536,
-            [0.3] * 1536,
-        ])
+        provider.embed = Mock(
+            return_value=[
+                [0.1] * 1536,
+                [0.2] * 1536,
+                [0.3] * 1536,
+            ]
+        )
         return provider
 
     @pytest.fixture
@@ -63,14 +65,11 @@ class TestBatchEmbeddingProcessor:
     def test_batches_chunks_correctly(self, processor):
         """Test that chunks are batched correctly."""
         # Create more chunks than the batch size
-        chunks = [
-            Chunk(text=f"Chunk {i}", metadata={"id": i})
-            for i in range(250)
-        ]
+        chunks = [Chunk(text=f"Chunk {i}", metadata={"id": i}) for i in range(250)]
 
         processor._store_embedding = Mock(side_effect=[f"id{i}" for i in range(250)])
 
-        with patch.object(processor.embedding_provider, 'embed') as mock_embed:
+        with patch.object(processor.embedding_provider, "embed") as mock_embed:
             mock_embed.return_value = [[0.1] * 1536 for _ in range(len(chunks))]
 
             result = processor.process(chunks)
@@ -136,7 +135,7 @@ class TestBatchEmbeddingProcessor:
 
         processor._store_embedding = Mock(side_effect=[f"id{i}" for i in range(chunk_count)])
 
-        with patch.object(processor.embedding_provider, 'embed') as mock_embed:
+        with patch.object(processor.embedding_provider, "embed") as mock_embed:
             mock_embed.return_value = [[0.1] * 1536 for _ in range(chunk_count)]
 
             processor.process(chunks)
@@ -153,7 +152,7 @@ class TestBatchEmbeddingProcessor:
 
         processor._store_embedding = Mock(side_effect=[f"id{i}" for i in range(500)])
 
-        with patch.object(processor.embedding_provider, 'embed') as mock_embed:
+        with patch.object(processor.embedding_provider, "embed") as mock_embed:
             mock_embed.return_value = [[0.1] * 1536 for _ in range(500)]
 
             result = processor.process(chunks)
@@ -173,14 +172,11 @@ class TestBatchEmbeddingProcessor:
 
     def test_store_embedding_called_for_each_chunk(self, processor):
         """Test that _store_embedding is called for each chunk."""
-        chunks = [
-            Chunk(text=f"Chunk {i}", metadata={})
-            for i in range(5)
-        ]
+        chunks = [Chunk(text=f"Chunk {i}", metadata={}) for i in range(5)]
 
         processor._store_embedding = Mock(side_effect=[f"id{i}" for i in range(5)])
 
-        with patch.object(processor.embedding_provider, 'embed') as mock_embed:
+        with patch.object(processor.embedding_provider, "embed") as mock_embed:
             mock_embed.return_value = [[0.1] * 1536 for _ in range(5)]
 
             processor.process(chunks)
@@ -197,7 +193,7 @@ class TestBatchEmbeddingProcessor:
 
         processor._store_embedding = Mock(side_effect=["id1", "id2"])
 
-        with patch.object(processor.embedding_provider, 'embed') as mock_embed:
+        with patch.object(processor.embedding_provider, "embed") as mock_embed:
             mock_embed.return_value = [[0.1] * 1536, [0.2] * 1536]
 
             processor.process(chunks)

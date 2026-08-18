@@ -82,10 +82,7 @@ class TestKeywordSearcher:
 
     def test_top_k_limit(self, searcher):
         """Test that top_k parameter limits results."""
-        chunks = [
-            {"id": i, "text": f"python content {i}"}
-            for i in range(20)
-        ]
+        chunks = [{"id": i, "text": f"python content {i}"} for i in range(20)]
 
         searcher.index(chunks)
         results = searcher.search("python", top_k=5)

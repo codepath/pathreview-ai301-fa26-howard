@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 @dataclass
 class ToolResult:
     """Result from tool execution."""
+
     success: bool
     data: dict
     error: str | None = None
