@@ -30,7 +30,9 @@ class PIIScrubber:
         """
         scrubbed = text
 
-        for pii_type, pattern in self.PII_PATTERNS.items():
+        # `pii_type` is unused here -- the scrubber does not record WHICH pattern
+        # matched, which is itself a known weakness of this implementation.
+        for pii_type, pattern in self.PII_PATTERNS.items():  # noqa: B007
             scrubbed = re.sub(pattern, "[REDACTED]", scrubbed, flags=re.IGNORECASE)
 
         return scrubbed

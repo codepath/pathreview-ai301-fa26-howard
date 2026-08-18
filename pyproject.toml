@@ -63,10 +63,54 @@ line-length = 100
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "SIM", "TCH"]
 
+# --- CI baseline, Aug 2026 --------------------------------------------------
+# `ruff check .` reported 182 findings on main and the lint job had never once
+# passed, so a red X on a student PR carried no information. Everything safely
+# fixable was fixed; the rules below are the remaining pre-existing debt,
+# suppressed so that a NEW finding on a student PR is a real signal.
+#
+# Two cautions before removing anything from this list:
+#   1. Some individual findings ARE the intentionally-seeded course bugs. Those
+#      sites are marked with an inline `# noqa: <RULE>` and a comment naming the
+#      defect. Never bulk-fix them -- that deletes the exercise.
+#   2. Never run `ruff check --fix --unsafe-fixes` on this repo. The unsafe
+#      fixes rewrite unused variables and loop bindings, which is exactly how
+#      the seeded defects are expressed.
+# Burn these down deliberately, one rule at a time, in their own PRs.
+ignore = [
+    "B904",   # raise ... from err -- 11 sites, all in api/routes error handling
+    "B905",   # zip(..., strict=) -- 3 sites
+    "N806",   # non-lowercase locals -- 3 sites, deliberate matrix/vector names
+    "SIM116", # if/else chain that could be a dict lookup -- 1 site
+    "SIM118", # `key in dict.keys()` -- 4 sites
+]
+
+[tool.ruff.lint.flake8-bugbear]
+# FastAPI's dependency-injection idiom is a function call in an argument
+# default by design (Depends/File/Query/...). B008 cannot know that, so these
+# are false positives rather than debt -- 18 of them across api/routes.
+extend-immutable-calls = [
+    "fastapi.Body",
+    "fastapi.Cookie",
+    "fastapi.Depends",
+    "fastapi.File",
+    "fastapi.Form",
+    "fastapi.Header",
+    "fastapi.Path",
+    "fastapi.Query",
+    "fastapi.Security",
+]
+
 [tool.ruff.lint.per-file-ignores]
 "core/models/*.py" = ["E501"]
 "scripts/*.py" = ["E501"]
 "alembic/versions/*.py" = ["E501"]
+"alembic/env.py" = ["E501"]
+# Long inline regex literal that cannot be wrapped without changing it.
+"safety/pii_scrubber.py" = ["E501"]
+# Tests bind a result for readability without always asserting on it, iterate
+# with an unused index, and embed long fixture strings. All noise here.
+"tests/**" = ["B007", "E501", "F841"]
 
 [tool.black]
 target-version = ["py311"]

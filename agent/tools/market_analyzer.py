@@ -89,7 +89,8 @@ class MarketAnalyzer(BaseTool):
         """
         # Flatten detected skills
         all_detected = set()
-        for category, skills_list in detected_skills.items():
+        # `category` is intentionally unused in the body; only skills_list is read.
+        for category, skills_list in detected_skills.items():  # noqa: B007
             all_detected.update(skills_list)
 
         # Find in-demand skills the user has

@@ -46,7 +46,10 @@ class SkillExtractor(BaseTool):
             "Git": r"\bgit\b",
             "Docker": r"\bdocker\b",
             "Kubernetes": r"\bkubernetes|k8s\b",
-            "Git": r"\bgit\b",
+            # Duplicate "Git" key -- a real latent defect in this table (this second
+            # binding silently shadows the first). Kept deliberately: it is course
+            # material, not lint noise. No dedicated issue filed yet.
+            "Git": r"\bgit\b",  # noqa: F601
             "GraphQL": r"\bgraphql\b",
             "REST": r"\brest|restful\b",
             "AWS": r"\baws\b",

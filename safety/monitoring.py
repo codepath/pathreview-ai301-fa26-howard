@@ -39,7 +39,9 @@ class SafetyMonitor:
             logger.warning("unknown_event_type", event_type=event_type)
             return
 
-        timestamp = datetime.utcnow().isoformat()
+        # Seeded defect: the timestamp is computed but never recorded on the event
+        # or in Redis, so safety events are not time-ordered. Kept intentionally.
+        timestamp = datetime.utcnow().isoformat()  # noqa: F841
 
         try:
             # Log to structlog

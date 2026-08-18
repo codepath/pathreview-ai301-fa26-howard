@@ -59,7 +59,10 @@ class HybridRetriever:
         )
 
         # Keyword search - need to fetch all chunks first
-        all_chunks = self._get_all_chunks(collection_name)
+        # Seeded defect (issue #24): these chunks are fetched and then ignored --
+        # scoring below uses batch-max normalization over the keyword results
+        # instead. Do not remove; this assignment is the tell for the bug.
+        all_chunks = self._get_all_chunks(collection_name)  # noqa: F841
         keyword_results = self.keyword_searcher.search(query, top_k=max_chunks * 2)
 
         # Create id-to-chunk mapping for both approaches

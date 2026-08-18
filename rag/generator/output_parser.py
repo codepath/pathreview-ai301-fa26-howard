@@ -28,7 +28,9 @@ def parse_review_output(raw: str) -> list[FeedbackSection]:
     Returns:
         List of FeedbackSection objects
     """
-    sections = []
+    # Seeded defect: this accumulator is never appended to or returned, so
+    # parsed sections are lost. Retained on purpose as course material.
+    sections = []  # noqa: F841
 
     # Try JSON in code fence first
     json_match = re.search(r"```(?:json)?\s*\n(.*?)\n```", raw, re.DOTALL)
