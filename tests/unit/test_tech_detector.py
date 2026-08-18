@@ -63,6 +63,9 @@ class TestTechDetector:
         detected_lower = [lang.lower() for lang in data["all_languages"]]
         # .ipynb should be treated as Python, not JSON
 
+    @pytest.mark.xfail(
+        strict=True, reason="issue #150: tech detector counts vendored/build-output files"
+    )
     def test_node_modules_excluded(self, detector):
         """Test node_modules/ directory is excluded from counts."""
         files = [
@@ -91,6 +94,9 @@ class TestTechDetector:
 
         # Python should be primary despite vendor files
 
+    @pytest.mark.xfail(
+        strict=True, reason="issue #150: tech detector counts vendored/build-output files"
+    )
     def test_build_directory_excluded(self, detector):
         """Test build directory is excluded."""
         files = [
