@@ -1967,5 +1967,83 @@
       "docker-compose.yml"
     ],
     "effort": "2\u20134 hours"
+  },
+  {
+    "id": "H-01",
+    "title": "Keyword search raises `ZeroDivisionError` when the index is empty",
+    "body": "`KeywordSearcher.search()` crashes with `ZeroDivisionError` (inside rank-bm25's IDF computation) when `index()` was called with an empty corpus. Searching an empty index should return an empty result list, not crash.\n\nThe covering test is marked `@pytest.mark.xfail` referencing manifest id H-01 \u2014 remove the marker as part of the fix.",
+    "labels": [
+      "tier-1",
+      "good first issue",
+      "rag",
+      "bug"
+    ],
+    "files": [
+      "rag/retriever/keyword_search.py",
+      "tests/unit/test_keyword_search.py"
+    ],
+    "effort": "2\u20134 hours"
+  },
+  {
+    "id": "H-02",
+    "title": "Output parser crashes on a top-level JSON array fallback",
+    "body": "When the LLM returns a top-level JSON array instead of an object, `output_parser.py` calls `.items()` on the parsed value and raises `AttributeError: 'list' object has no attribute 'items'`. The fallback path should handle array responses.\n\nThe covering test is marked `@pytest.mark.xfail` referencing manifest id H-02 \u2014 remove the marker as part of the fix.",
+    "labels": [
+      "tier-1",
+      "good first issue",
+      "rag",
+      "bug"
+    ],
+    "files": [
+      "rag/generator/output_parser.py",
+      "tests/unit/test_output_parser.py"
+    ],
+    "effort": "2\u20134 hours"
+  },
+  {
+    "id": "H-03",
+    "title": "README parser returns no sections for a standard README",
+    "body": "`ReadmeParser.parse()` returns zero sections for a conventional README with `#`/`##` headings. Section extraction never matches.\n\nThe covering test is marked `@pytest.mark.xfail` referencing manifest id H-03 \u2014 remove the marker as part of the fix.",
+    "labels": [
+      "tier-2",
+      "ingestion",
+      "bug"
+    ],
+    "files": [
+      "ingestion/parsers/readme_parser.py",
+      "tests/unit/test_readme_parser.py"
+    ],
+    "effort": "2\u20134 hours"
+  },
+  {
+    "id": "H-04",
+    "title": "README parser extracts no heading hierarchy",
+    "body": "`ReadmeParser` produces an empty heading hierarchy even for documents with nested `#`/`##`/`###` headings. Likely the same root cause as H-03, but has its own failing test.\n\nThe covering test is marked `@pytest.mark.xfail` referencing manifest id H-04 \u2014 remove the marker as part of the fix.",
+    "labels": [
+      "tier-2",
+      "ingestion",
+      "bug"
+    ],
+    "files": [
+      "ingestion/parsers/readme_parser.py",
+      "tests/unit/test_readme_parser.py"
+    ],
+    "effort": "1\u20132 hours"
+  },
+  {
+    "id": "H-05",
+    "title": "`verify_password` raises `UnknownHashError` on malformed stored hashes instead of returning False",
+    "body": "`core/security.py` lets passlib's `UnknownHashError` escape when the stored hash is not a recognizable format. Verification against a malformed hash should fail closed (return `False`), not raise.\n\nThe covering test is marked `@pytest.mark.xfail` referencing manifest id H-05 \u2014 remove the marker as part of the fix.",
+    "labels": [
+      "tier-1",
+      "good first issue",
+      "api",
+      "bug"
+    ],
+    "files": [
+      "core/security.py",
+      "tests/unit/test_security.py"
+    ],
+    "effort": "1\u20132 hours"
   }
 ]

@@ -140,7 +140,7 @@ class TestOutputParser:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="no issue filed yet: output parser calls .items() on a JSON array fallback",
+        reason="manifest H-02 (issue not yet seeded): output parser calls .items() on a JSON array fallback",
     )
     def test_json_array_fallback(self):
         """Test handling of JSON array (not dict)."""

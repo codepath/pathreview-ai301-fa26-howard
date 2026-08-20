@@ -17,7 +17,7 @@ class TestReadmeParser:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="no issue filed yet: README parser returns no sections for a standard README",
+        reason="manifest H-03 (issue not yet seeded): README parser returns no sections for a standard README",
     )
     def test_parse_standard_readme(self, parser, sample_readme_text):
         """Test parsing a standard README."""
@@ -133,7 +133,7 @@ class TestReadmeParser:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="no issue filed yet: README parser extracts no headings from a standard README",
+        reason="manifest H-04 (issue not yet seeded): README parser extracts no heading hierarchy",
     )
     def test_extract_heading_hierarchy(self, parser):
         """Test heading hierarchy extraction."""

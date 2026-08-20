@@ -31,9 +31,19 @@ jobs:
             try {
               results = fs.readFileSync('eval_results.json', 'utf8');
             } catch (e) {}
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `## RAG Evaluation Results\n\`\`\`json\n${results}\n\`\`\``
-            });
+            // The GITHUB_TOKEN on pull_request runs from forks is always
+            // read-only, so createComment 403s on every student PR. That must
+            // not fail the eval job -- the eval itself already ran above.
+            // Degrade to a log notice instead.
+            try {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## RAG Evaluation Results\n\`\`\`json\n${results}\n\`\`\``
+              });
+            } catch (e) {
+              core.notice(`Could not comment eval results on the PR (read-only token on fork PRs): ${e.message}`);
+              core.summary.addHeading('RAG Evaluation Results').addCodeBlock(results, 'json');
+              await core.summary.write();
+            }

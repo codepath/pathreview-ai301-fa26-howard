@@ -133,7 +133,7 @@ class TestKeywordSearcher:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="no issue filed yet: BM25 keyword search raises ZeroDivisionError on an empty index",
+        reason="manifest H-01 (issue not yet seeded): BM25 keyword search raises ZeroDivisionError on an empty index",
     )
     def test_empty_index(self, searcher):
         """Test searching on empty index."""
