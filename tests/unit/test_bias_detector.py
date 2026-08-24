@@ -11,7 +11,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_dismissive_bootcamp_language_detected(self):
         """Test dismissive bootcamp language is detected as biased."""
@@ -24,7 +24,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_bootcamp_lacks_rigor_detected(self):
         """Test 'bootcamp lacks rigor' language detected."""
@@ -76,7 +76,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_demographic_assumption_age_detected(self):
         """Test demographic assumption about age detected."""
@@ -197,7 +197,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_coding_bootcamp_variant(self):
         """Test 'coding bootcamp' variant is detected."""
@@ -217,7 +217,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_developer_vs_programmer_distinction(self):
         """Test both developer and programmer terms detected."""
@@ -232,7 +232,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_multiple_bias_indicators(self):
         """Test text with multiple bias indicators."""
@@ -246,7 +246,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_negative_educational_claim(self):
         """Test negative claims about education detected."""
@@ -266,7 +266,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_rich_poor_assumption(self):
         """Test rich/poor background assumption detected."""
@@ -302,7 +302,7 @@ class TestBiasDetector:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #151: bias detector patterns are too narrow to match common phrasings",
+        reason="issue #58: bias detector patterns are too narrow to match common phrasings",
     )
     def test_assumption_vs_observation(self):
         """Test that observations are not flagged, assumptions are."""

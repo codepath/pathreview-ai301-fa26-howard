@@ -42,7 +42,7 @@ class TestRelevanceScorer:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #157: relevance scorer 'partial overlap' fixture actually has full overlap",
+        reason="issue #64: relevance scorer 'partial overlap' fixture actually has full overlap",
     )
     def test_query_with_partial_overlap(self, scorer):
         """Test query with partial overlap returns score between 0 and 1."""

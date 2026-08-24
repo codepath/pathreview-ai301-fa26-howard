@@ -16,7 +16,7 @@ class TestReadmeScorer:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #156: README scorer fixture is too short for its own word-count assertion",
+        reason="issue #63: README scorer fixture is too short for its own word-count assertion",
     )
     def test_readme_with_all_quality_signals(self, scorer):
         """Test README with all quality signals returns high score."""

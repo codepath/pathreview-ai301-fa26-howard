@@ -110,7 +110,7 @@ class StructuralChunker(BaseChunker):
                     heading_stack.pop()
 
                 heading_stack.append((heading_level, heading_text))
-                # Seeded defect (issue #149): the tracked heading level is never read back,
+                # Seeded defect (issue #56): the tracked heading level is never read back,
                 # so heading-less documents get dropped. Leave as-is -- removing the
                 # assignment would hide the bug from students.
                 current_level = heading_level  # noqa: F841

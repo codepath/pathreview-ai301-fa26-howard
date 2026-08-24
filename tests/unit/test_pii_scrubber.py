@@ -33,7 +33,7 @@ class TestPIIScrubber:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #146: PII scrubber does not redact parenthesized US phone numbers",
+        reason="issue #53: PII scrubber does not redact parenthesized US phone numbers",
     )
     def test_us_phone_number_redaction(self, scrubber):
         """Test US phone number is redacted."""
@@ -45,7 +45,7 @@ class TestPIIScrubber:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #146: PII scrubber does not redact parenthesized US phone numbers",
+        reason="issue #53: PII scrubber does not redact parenthesized US phone numbers",
     )
     def test_us_phone_formats(self, scrubber):
         """Test various US phone number formats."""
@@ -129,7 +129,7 @@ class TestPIIScrubber:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #146: PII scrubber does not redact parenthesized US phone numbers",
+        reason="issue #53: PII scrubber does not redact parenthesized US phone numbers",
     )
     def test_detect_phone_pii(self, scrubber):
         """Test detect() finds phone number PII."""
@@ -190,7 +190,7 @@ class TestPIIScrubber:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #146: PII scrubber does not redact parenthesized US phone numbers",
+        reason="issue #53: PII scrubber does not redact parenthesized US phone numbers",
     )
     def test_phone_at_start_of_text(self, scrubber):
         """Test phone number at start of text."""
@@ -236,7 +236,7 @@ class TestPIIScrubber:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #146: PII scrubber does not redact parenthesized US phone numbers",
+        reason="issue #53: PII scrubber does not redact parenthesized US phone numbers",
     )
     def test_mixed_pii_and_text(self, scrubber):
         """Test text with mix of PII and regular content."""

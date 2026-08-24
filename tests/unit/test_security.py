@@ -217,7 +217,7 @@ class TestSecurity:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="manifest H-05 (issue not yet seeded): password verify raises UnknownHashError instead of returning False",
+        reason="issue #72 (manifest H-05): password verify raises UnknownHashError instead of returning False",
     )
     def test_verify_with_wrong_hash_format(self):
         """Test verify_password with non-bcrypt hash."""

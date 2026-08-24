@@ -172,7 +172,7 @@ class TestPromptDefense:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #64: prompt injection defense does not sanitize newline/whitespace variants",
+        reason="issue #24: prompt injection defense does not sanitize newline/whitespace variants",
     )
     def test_whitespace_variations_detected(self):
         """Test detection with whitespace variations."""

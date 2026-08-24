@@ -59,7 +59,7 @@ class HybridRetriever:
         )
 
         # Keyword search - need to fetch all chunks first
-        # Seeded defect (issue #24): these chunks are fetched and then ignored --
+        # Seeded defect (issue #6): these chunks are fetched and then ignored --
         # scoring below uses batch-max normalization over the keyword results
         # instead. Do not remove; this assignment is the tell for the bug.
         all_chunks = self._get_all_chunks(collection_name)  # noqa: F841

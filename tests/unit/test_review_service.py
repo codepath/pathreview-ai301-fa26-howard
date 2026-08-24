@@ -72,7 +72,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_get_review_returns_review_for_correct_owner(self, mock_db_session):
         """Test get_review returns review when user_id matches."""
@@ -94,7 +94,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_get_review_returns_none_for_wrong_user(self, mock_db_session):
         """Test get_review returns None when user_id doesn't match."""
@@ -113,7 +113,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_returns_paginated_results(self, mock_db_session):
         """Test list_reviews returns paginated results."""
@@ -135,7 +135,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_page_2_returns_correct_offset(self, mock_db_session):
         """Test list_reviews page 2 returns correct offset."""
@@ -156,7 +156,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_returns_tuple(self, mock_db_session):
         """Test list_reviews returns (reviews, total) tuple."""
@@ -209,7 +209,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_get_review_uses_select_and_join(self, mock_db_session):
         """Test get_review constructs proper SQL with join."""
@@ -227,7 +227,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_default_pagination(self, mock_db_session):
         """Test list_reviews uses default pagination."""
@@ -245,7 +245,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_custom_page_size(self, mock_db_session):
         """Test list_reviews with custom page size."""
@@ -278,7 +278,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_get_review_verifies_ownership(self, mock_db_session):
         """Test get_review checks Profile.user_id matches."""
@@ -296,7 +296,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_counts_total(self, mock_db_session):
         """Test list_reviews calculates total count."""
@@ -314,7 +314,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_returns_reviews_list(self, mock_db_session):
         """Test list_reviews returns list of Review objects."""
@@ -345,7 +345,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_get_review_with_valid_uuid(self, mock_db_session):
         """Test get_review handles valid UUID parameters."""
@@ -363,7 +363,7 @@ class TestReviewService:
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
-        strict=True, reason="issue #158: review_service tests misconfigure async mocks"
+        strict=True, reason="issue #65: review_service tests misconfigure async mocks"
     )
     async def test_list_reviews_ordered_by_created_at(self, mock_db_session):
         """Test list_reviews returns results ordered by created_at desc."""

@@ -42,7 +42,7 @@ class TestFaithfulnessChecker:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #152: faithfulness checker can never mark short claims as supported",
+        reason="issue #59: faithfulness checker can never mark short claims as supported",
     )
     def test_partial_support_returns_middle_score(self, checker):
         """Test partial support returns score between 0 and 1."""
@@ -87,7 +87,7 @@ class TestFaithfulnessChecker:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #152: faithfulness checker can never mark short claims as supported",
+        reason="issue #59: faithfulness checker can never mark short claims as supported",
     )
     def test_multiple_context_chunks(self, checker):
         """Test multiple context chunks contribute to score."""
@@ -168,7 +168,7 @@ class TestFaithfulnessChecker:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #152: faithfulness checker can never mark short claims as supported",
+        reason="issue #59: faithfulness checker can never mark short claims as supported",
     )
     def test_multiple_claims_varying_support(self, checker):
         """Test scoring with multiple claims of varying support."""
@@ -224,7 +224,7 @@ class TestFaithfulnessChecker:
 
     @pytest.mark.xfail(
         strict=True,
-        reason="issue #153: faithfulness checker crashes when a context chunk has text: None",
+        reason="issue #60: faithfulness checker crashes when a context chunk has text: None",
     )
     def test_none_context_chunk_text(self, checker):
         """Test handling of None in context chunk text."""

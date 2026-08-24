@@ -44,7 +44,7 @@ class TestSkillExtractor:
         assert any("python" in s.lower() for s in skill_names)
 
     @pytest.mark.xfail(
-        strict=True, reason="issue #148: skill extractor does not detect JavaScript/TypeScript"
+        strict=True, reason="issue #55: skill extractor does not detect JavaScript/TypeScript"
     )
     def test_text_with_typescript_files(self, extractor):
         """Test TypeScript detection."""
@@ -131,7 +131,7 @@ class TestSkillExtractor:
         assert any("react" in s.lower() for s in skill_names)
 
     @pytest.mark.xfail(
-        strict=True, reason="issue #148: skill extractor does not detect JavaScript/TypeScript"
+        strict=True, reason="issue #55: skill extractor does not detect JavaScript/TypeScript"
     )
     def test_database_technology_detection(self, extractor):
         """Test database technology detection."""
@@ -146,7 +146,7 @@ class TestSkillExtractor:
         assert any("postgres" in s.lower() or "sql" in s.lower() for s in skill_names)
 
     @pytest.mark.xfail(
-        strict=True, reason="issue #148: skill extractor does not detect JavaScript/TypeScript"
+        strict=True, reason="issue #55: skill extractor does not detect JavaScript/TypeScript"
     )
     def test_devops_tool_detection(self, extractor):
         """Test DevOps tool detection."""
@@ -180,7 +180,7 @@ class TestSkillExtractor:
         assert any("python" in s.lower() for s in skill_names)
 
     @pytest.mark.xfail(
-        strict=True, reason="issue #148: skill extractor does not detect JavaScript/TypeScript"
+        strict=True, reason="issue #55: skill extractor does not detect JavaScript/TypeScript"
     )
     def test_javascript_detection(self, extractor):
         """Test JavaScript detection."""
@@ -195,7 +195,7 @@ class TestSkillExtractor:
         assert any("javascript" in s.lower() or "js" in s.lower() for s in skill_names)
 
     @pytest.mark.xfail(
-        strict=True, reason="issue #148: skill extractor does not detect JavaScript/TypeScript"
+        strict=True, reason="issue #55: skill extractor does not detect JavaScript/TypeScript"
     )
     def test_docker_compose_detection(self, extractor):
         """Test Docker and Docker Compose detection."""

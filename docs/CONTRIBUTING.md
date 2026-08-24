@@ -17,13 +17,13 @@ Create a branch from `main` using this format:
 <type>/<issue-number>-<short-description>
 ```
 
-Where `<issue-number>` is the GitHub issue number (the number shown under the issue title in the tracker — e.g., `#124`).
+Where `<issue-number>` is the GitHub issue number (the number shown under the issue title in the tracker — e.g., `#54`).
 
 Examples:
-- `fix/124-resume-parser-index-error`
-- `feat/128-first-impression-prompt`
-- `test/115-readme-scorer-unit-tests`
-- `docs/110-update-setup-guide`
+- `fix/54-resume-section-whitespace`
+- `feat/26-safety-event-health-check`
+- `test/44-review-service-coverage`
+- `docs/11-hybrid-scoring-formula`
 
 Types: `fix`, `feat`, `test`, `docs`, `refactor`, `perf`, `chore`
 
@@ -45,12 +45,12 @@ We use [Conventional Commits](https://www.conventionalcommits.org/). Every commi
 
 **Examples:**
 ```
-fix(ingestion): handle missing experience section in resume parser
+fix(ingestion): handle leading whitespace in resume section detection
 
-Resume parser crashed with IndexError when a resume had no work experience
-section. Added a bounds check before accessing sections['experience'][0].
+Section headings with leading whitespace were not recognized, so their
+content was silently dropped. Strip the line before matching headings.
 
-Fixes #42
+Fixes #54
 ```
 
 ```
@@ -100,7 +100,7 @@ Many issues in the tracker are deliberately-planted bugs, and each one has unit
 tests that currently fail. Those tests are marked so the suite can stay green:
 
 ```python
-@pytest.mark.xfail(strict=True, reason="issue #149: structural chunker drops heading-less docs")
+@pytest.mark.xfail(strict=True, reason="issue #56: structural chunker drops heading-less docs")
 def test_document_with_no_headings(self, chunker):
     ...
 ```
@@ -108,13 +108,13 @@ def test_document_with_no_headings(self, chunker):
 The marker is `strict=True`, so **when your fix makes the test pass, CI fails
 with `XPASS(strict)` until you delete the marker.** That is intentional:
 removing the `@pytest.mark.xfail` line is part of fixing the issue. Your PR for
-issue #149 should both fix the bug and drop the marker from every test that
+issue #56 should both fix the bug and drop the marker from every test that
 covers it.
 
 The same applies to the baseline suppressions in `pyproject.toml`. Some seeded
 bugs are also flagged by ruff or mypy and are suppressed there with a comment
 naming the defect — for example `api/routes/health.py` `attr-defined` is
-issue #155. If you fix one of those, remove its suppression too.
+issue #62. If you fix one of those, remove its suppression too.
 
 ### Do not bulk-fix lint or type findings
 
