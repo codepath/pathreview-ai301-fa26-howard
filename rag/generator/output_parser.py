@@ -38,14 +38,23 @@ def parse_review_output(raw: str) -> list[FeedbackSection]:
         json_str = json_match.group(1)
         try:
             data = json.loads(json_str)
-            return _parse_json_output(data)
+
+            if isinstance(data, dict):
+                return _parse_json_output(data)
+
+            return _parse_plaintext_output(raw)
+
         except json.JSONDecodeError:
-            logger.warning("json_parsing_failed_in_fence", json_snippet=json_str[:100])
+            logger.warning(
+                "json_parsing_failed_in_fence",
+                json_snippet=json_str[:100],
+            )
 
     # Try raw JSON
     try:
         data = json.loads(raw)
-        return _parse_json_output(data)
+        return _parse_json_output(data) if isinstance(data, dict) else _parse_plaintext_output(raw)
+
     except json.JSONDecodeError:
         logger.warning("raw_json_parsing_failed")
 
@@ -79,8 +88,12 @@ def _parse_json_output(data: dict) -> list[FeedbackSection]:
             )
         else:
             section = FeedbackSection(
-                section_name=key, content=str(value), confidence=0.85, suggestions=[]
+                section_name=key,
+                content=str(value),
+                confidence=0.85,
+                suggestions=[],
             )
+
         sections.append(section)
 
     logger.info("json_output_parsed", section_count=len(sections))
@@ -98,7 +111,10 @@ def _parse_plaintext_output(raw: str) -> list[FeedbackSection]:
     """
     # Treat entire text as a single feedback section
     section = FeedbackSection(
-        section_name="general_feedback", content=raw, confidence=0.7, suggestions=[]
+        section_name="general_feedback",
+        content=raw,
+        confidence=0.7,
+        suggestions=[],
     )
 
     logger.info("plaintext_output_parsed", content_length=len(raw))
