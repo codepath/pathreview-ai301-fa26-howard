@@ -14,10 +14,6 @@ class TestReadmeScorer:
         """Create a ReadmeScorer instance."""
         return ReadmeScorer()
 
-    @pytest.mark.xfail(
-        strict=True,
-        reason="issue #63: README scorer fixture is too short for its own word-count assertion",
-    )
     def test_readme_with_all_quality_signals(self, scorer):
         """Test README with all quality signals returns high score."""
         readme = """
@@ -51,6 +47,8 @@ class TestReadmeScorer:
         ## Live Demo
         [Try it here](https://demo.example.com)
         """
+        # Pad past the 500-word "comprehensive" threshold with neutral prose
+        readme += "\n## About\n" + "This paragraph describes the project in plain words. " * 60
 
         result = scorer.execute({"readme_content": readme})
 
