@@ -4,6 +4,7 @@ from unittest.mock import AsyncMock, Mock, patch
 from uuid import uuid4
 
 import pytest
+from fastapi import HTTPException
 
 from core.services.review_service import (
     create_review,
@@ -44,9 +45,16 @@ class TestReviewService:
         profile.user_id = uuid4()
         return profile
 
+    @pytest.fixture
+    def profile_found(self, mock_db_session, mock_profile):
+        """Make the ownership lookup in create_review find the user's profile."""
+        result = Mock()
+        result.scalars.return_value.first.return_value = mock_profile
+        mock_db_session.execute = AsyncMock(return_value=result)
+
     @pytest.mark.asyncio
     async def test_create_review_returns_review_with_pending_status(
-        self, mock_db_session, mock_review
+        self, profile_found, mock_db_session, mock_review
     ):
         """Test create_review returns Review with status='pending'."""
         profile_id = uuid4()
@@ -69,6 +77,20 @@ class TestReviewService:
             MockReview.assert_called()
             call_kwargs = MockReview.call_args[1]
             assert call_kwargs["status"] == "pending"
+
+    @pytest.mark.asyncio
+    async def test_create_review_rejects_profile_not_owned_by_user(self, mock_db_session):
+        """Test create_review rejects a profile that belongs to another user (issue #67)."""
+        # Ownership lookup returns nothing, because the profile belongs to another user
+        result = Mock()
+        result.scalars.return_value.first.return_value = None
+        mock_db_session.execute = AsyncMock(return_value=result)
+
+        with pytest.raises(HTTPException) as exc_info:
+            await create_review(mock_db_session, profile_id=uuid4(), user_id=uuid4())
+
+        assert exc_info.value.status_code == 404
+        mock_db_session.add.assert_not_called()
 
     @pytest.mark.asyncio
     @pytest.mark.xfail(
@@ -175,7 +197,7 @@ class TestReviewService:
         assert isinstance(total, int)
 
     @pytest.mark.asyncio
-    async def test_create_review_calls_db_add(self, mock_db_session):
+    async def test_create_review_calls_db_add(self, profile_found, mock_db_session):
         """Test create_review calls db.add()."""
         profile_id = uuid4()
         user_id = uuid4()
@@ -186,7 +208,7 @@ class TestReviewService:
             mock_db_session.add.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_create_review_calls_db_commit(self, mock_db_session):
+    async def test_create_review_calls_db_commit(self, profile_found, mock_db_session):
         """Test create_review calls db.commit()."""
         profile_id = uuid4()
         user_id = uuid4()
@@ -197,7 +219,7 @@ class TestReviewService:
             mock_db_session.commit.assert_called_once()
 
     @pytest.mark.asyncio
-    async def test_create_review_calls_db_refresh(self, mock_db_session):
+    async def test_create_review_calls_db_refresh(self, profile_found, mock_db_session):
         """Test create_review calls db.refresh()."""
         profile_id = uuid4()
         user_id = uuid4()
@@ -263,7 +285,7 @@ class TestReviewService:
         assert isinstance(reviews, list)
 
     @pytest.mark.asyncio
-    async def test_create_review_with_uuid_ids(self, mock_db_session):
+    async def test_create_review_with_uuid_ids(self, profile_found, mock_db_session):
         """Test create_review handles UUID objects correctly."""
         profile_id = uuid4()
         user_id = uuid4()
@@ -330,7 +352,7 @@ class TestReviewService:
         assert isinstance(reviews, list)
 
     @pytest.mark.asyncio
-    async def test_review_sections_and_score_initially_none(self, mock_db_session):
+    async def test_review_sections_and_score_initially_none(self, profile_found, mock_db_session):
         """Test review has None for sections and overall_score initially."""
         profile_id = uuid4()
         user_id = uuid4()
