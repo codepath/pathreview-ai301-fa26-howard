@@ -170,26 +170,40 @@ class SkillExtractor:
                 evidence=python_evidence,
             )
 
-        # JavaScript/TypeScript detection
+        # Treat explicit JavaScript and TypeScript signals independently so a
+        # mixed README can identify both languages.
+        filename_lower = str(filename or "").lower()
         js_evidence = []
-        if ".js" in str(filename or "").lower():
-            js_evidence.append("JavaScript file extension (.js)")
-        if ".ts" in str(filename or "").lower():
-            js_evidence.append("TypeScript file extension (.ts)")
-        if re.search(r"\b(import|require)\s+", text):
-            js_evidence.append("CommonJS or ES6 imports")
-        if "package.json" in text_lower:
-            js_evidence.append("package.json found")
+        ts_evidence = []
+        if filename_lower.endswith((".js", ".jsx", ".mjs", ".cjs")):
+            js_evidence.append("JavaScript file extension")
+        if filename_lower.endswith((".ts", ".tsx", ".mts", ".cts")):
+            ts_evidence.append("TypeScript file extension")
+        if re.search(r"\bjavascript\b", text_lower):
+            js_evidence.append("JavaScript named in content")
+        if re.search(r"\btypescript\b", text_lower):
+            ts_evidence.append("TypeScript named in content")
+        if re.search(
+            r"(?m)^[ \t]*(?:export[ \t]+)?(?:interface|type)[ \t]+\w+" r"[ \t]*(?:[={<]|extends\b)",
+            text,
+        ):
+            ts_evidence.append("TypeScript interface or type declaration")
+        if re.search(r"""\brequire\s*\(\s*['"]""", text):
+            js_evidence.append("CommonJS require call")
+        if not ts_evidence:
+            if re.search(r"""\b(?:import\s+|from\s+)['"][^'"\n]+['"]""", text):
+                js_evidence.append("ES module import")
+            if "package.json" in text_lower:
+                js_evidence.append("package.json found")
 
-        if js_evidence:
-            confidence = min(0.95, 0.6 + len(js_evidence) * 0.1)
-            lang = "TypeScript" if ".ts" in str(filename or "").lower() else "JavaScript"
-            skills_dict[lang] = SkillDetection(
-                name=lang,
-                category="Language",
-                confidence=confidence,
-                evidence=js_evidence,
-            )
+        for language, evidence in (("JavaScript", js_evidence), ("TypeScript", ts_evidence)):
+            if evidence:
+                skills_dict[language] = SkillDetection(
+                    name=language,
+                    category="Language",
+                    confidence=min(0.95, 0.6 + len(evidence) * 0.1),
+                    evidence=evidence,
+                )
 
         # Other languages by extension
         extension_langs = {
@@ -203,7 +217,6 @@ class SkillExtractor:
             ".swift": ("Swift", 0.95),
         }
 
-        filename_lower = str(filename or "").lower()
         for ext, (lang, confidence) in extension_langs.items():
             if ext in filename_lower:
                 skills_dict[lang] = SkillDetection(
@@ -251,14 +264,20 @@ class SkillExtractor:
 
         for db, confidence in self.DATABASES.items():
             if db in text_lower:
-                display_name = db.upper() if db in ["sql", "nosql"] else db.title()
-                if display_name not in skills_dict:
-                    skills_dict[display_name] = SkillDetection(
-                        name=display_name,
-                        category="Database",
-                        confidence=confidence,
-                        evidence=[f"Found '{db}' reference in content"],
-                    )
+                evidence = f"Found '{db}' reference in content"
+            elif db == "postgresql" and re.search(r"\b(?:postgres|psycopg2?)\b", text_lower):
+                evidence = "Found a PostgreSQL alias or psycopg client in content"
+            else:
+                continue
+
+            display_name = db.upper() if db in ["sql", "nosql"] else db.title()
+            if display_name not in skills_dict:
+                skills_dict[display_name] = SkillDetection(
+                    name=display_name,
+                    category="Database",
+                    confidence=confidence,
+                    evidence=[evidence],
+                )
 
     def _detect_tools(self, text: str, skills_dict: dict) -> None:
         """Detect tools and DevOps technologies."""
@@ -266,11 +285,25 @@ class SkillExtractor:
 
         for tool, confidence in self.TOOLS.items():
             if tool in text_lower:
-                display_name = tool.upper() if tool in ["ci/cd"] else tool.title()
-                if display_name not in skills_dict:
-                    skills_dict[display_name] = SkillDetection(
-                        name=display_name,
-                        category="Tool",
-                        confidence=confidence,
-                        evidence=[f"Found '{tool}' reference in content"],
-                    )
+                evidence = f"Found '{tool}' reference in content"
+            elif tool == "docker" and re.search(
+                r"(?m)^[ \t]*FROM[ \t]+\S+[^\n]*\n[ \t]*(?:RUN|EXPOSE|COPY|CMD|WORKDIR)\b",
+                text,
+            ):
+                evidence = "Found Dockerfile instructions"
+            elif tool == "docker" and re.search(
+                r"(?m)^[ \t]*services:[ \t]*\n[ \t]+[\w-]+:[ \t]*\n[ \t]+(?:image|build):",
+                text,
+            ):
+                evidence = "Found a Compose service with an image or build configuration"
+            else:
+                continue
+
+            display_name = tool.upper() if tool == "ci/cd" else tool.title()
+            if display_name not in skills_dict:
+                skills_dict[display_name] = SkillDetection(
+                    name=display_name,
+                    category="Tool",
+                    confidence=confidence,
+                    evidence=[evidence],
+                )
