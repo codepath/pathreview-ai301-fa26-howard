@@ -172,7 +172,7 @@ class SkillExtractor:
 
         # Treat explicit JavaScript and TypeScript signals independently so a
         # mixed README can identify both languages.
-        filename_lower = (filename or "").lower()
+        filename_lower = str(filename or "").lower()
         js_evidence = []
         ts_evidence = []
         if filename_lower.endswith((".js", ".jsx", ".mjs", ".cjs")):
@@ -184,15 +184,14 @@ class SkillExtractor:
         if re.search(r"\btypescript\b", text_lower):
             ts_evidence.append("TypeScript named in content")
         if re.search(
-            r"(?m)^[ \t]*(?:export[ \t]+)?(?:interface|type)[ \t]+\w+"
-            r"[ \t]*(?:[={<]|extends\b)",
+            r"(?m)^[ \t]*(?:export[ \t]+)?(?:interface|type)[ \t]+\w+" r"[ \t]*(?:[={<]|extends\b)",
             text,
         ):
             ts_evidence.append("TypeScript interface or type declaration")
-        if re.search(r'''\brequire\s*\(\s*['"]''', text):
+        if re.search(r"""\brequire\s*\(\s*['"]""", text):
             js_evidence.append("CommonJS require call")
         if not ts_evidence:
-            if re.search(r'''\b(?:import\s+|from\s+)['"][^'"\n]+['"]''', text):
+            if re.search(r"""\b(?:import\s+|from\s+)['"][^'"\n]+['"]""", text):
                 js_evidence.append("ES module import")
             if "package.json" in text_lower:
                 js_evidence.append("package.json found")
@@ -271,7 +270,7 @@ class SkillExtractor:
             else:
                 continue
 
-            display_name = "PostgreSQL" if db == "postgresql" else db.title()
+            display_name = db.upper() if db in ["sql", "nosql"] else db.title()
             if display_name not in skills_dict:
                 skills_dict[display_name] = SkillDetection(
                     name=display_name,

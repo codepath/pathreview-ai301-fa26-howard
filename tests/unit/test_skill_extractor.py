@@ -135,9 +135,12 @@ class TestSkillExtractor:
         """
         result = extractor.extract_skills(text)
 
-        skill_names = [s.name for s in result]
-        # Should detect PostgreSQL
-        assert any("postgres" in s.lower() or "sql" in s.lower() for s in skill_names)
+        database_names = [skill.name for skill in result if skill.category == "Database"]
+        assert database_names == ["Postgresql"]
+
+        direct_reference = extractor.extract_skills("PostgreSQL with psycopg2")
+        database_names = [skill.name for skill in direct_reference if skill.category == "Database"]
+        assert database_names == ["Postgresql"]
 
     def test_devops_tool_detection(self, extractor):
         """Test DevOps tool detection."""
